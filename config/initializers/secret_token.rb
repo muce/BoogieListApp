@@ -1,0 +1,1 @@
+BoogieListApp::Application.config.secret_token = '5400bdf56ff910825ba89fcae922cf8d9b3b6e6e075be69d58808ca65c0c40e707160e86649cfbd167af58f23a0422deed7ee4deeaa54c04380a7a820f22eb68'

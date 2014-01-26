@@ -1,0 +1,24 @@
+<b>User: </b><%= @user['name'] %><br/>
+<%= link_to("Create New Playlist", playlists_path) %></br/>
+<h2>Posts</h2>
+<b>Filter By</b><br/>
+<b>My Posts: </b><%= check_box_tag('my_posts', 'yes', true ) %><br/>
+<b>My Likes: </b><%= check_box_tag('my_likes', 'yes', true ) %></br/>
+<b>Num Items This Page: </b><%= @posts.length %><br/>
+<%= link_to 'Previous', url_for(:page => @posts.previous_page_params) %>
+<%= link_to 'Next', url_for(:page => @posts.next_page_params) %>
+<ul>
+<% @posts.each do |post| %>
+<li>
+	<%= image_tag(post['picture']) %><br/>
+	<b>Name: </b><%= post['name'] %><br/>
+	<b>Description: </b><%= post['description'] %><br/>
+	<b>Link: </b><%= link_to(post['link'], post['link'], :target => "_blank") %><br/>
+	<b>Source: </b><%= link_to(post['source'], post['source'], :target => "_blank" )%><br/>
+	<b>Message: </b><%= post['message'] %><br/>
+	<b>Likes: </b><% if !post['likes'].nil? %><%= post['likes'].length %><% end %><br/>
+	<b>Comments: </b><% if !post['comments'].nil? %><%= post['comments'].length %><% end %>
+</li>
+<hr>
+<% end %>
+</ul>

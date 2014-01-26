@@ -1,0 +1,20 @@
+development: 
+  app_id: '563067157094964'
+  secret_key: '3c02fd377c81c2b444643075c6ed75a9'
+  callback_url: 'http://localhost:3000'
+  boogie_tunes_id: '314642735316936'
+  chaotic_fm_id: '518413371538533'
+  
+test: 
+  app_id: '563067157094964'
+  secret_key: '3c02fd377c81c2b444643075c6ed75a9'
+  callback_url: 'http://localhost:3000'
+  boogie_tunes_id: '314642735316936'
+  chaotic_fm_id: '518413371538533'
+  
+production: 
+  app_id: '563067157094964'
+  secret_key: '3c02fd377c81c2b444643075c6ed75a9'
+  callback_url: 'http://localhost:3000'
+  boogie_tunes_id: '314642735316936'
+  chaotic_fm_id: '518413371538533'
