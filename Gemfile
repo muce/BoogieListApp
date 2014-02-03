@@ -9,6 +9,11 @@ gem 'koala', '1.3.0'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 
+# Use resque for scheduled youtube to mp3 conversion jobs
+gem 'resque', '~> 2.0.0.pre.1', github: 'resque/resque'
+
+gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
+
 # use Heroku for production server
 # gem 'heroku'
 

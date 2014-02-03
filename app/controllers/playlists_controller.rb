@@ -28,7 +28,7 @@ class PlaylistsController < ApplicationController
 
     respond_to do |format|
       if @playlist.save
-        format.html { redirect_to @playlist, notice: 'Playlist was successfully created.' }
+        format.html { redirect_to playlists_url, notice: 'Playlist was successfully created.' }
         format.json { render action: 'show', status: :created, location: @playlist }
       else
         format.html { render action: 'new' }
@@ -42,7 +42,7 @@ class PlaylistsController < ApplicationController
   def update
     respond_to do |format|
       if @playlist.update(playlist_params)
-        format.html { redirect_to @playlist, notice: 'Playlist was successfully updated.' }
+        format.html { redirect_to playlists_url, notice: 'Playlist was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }

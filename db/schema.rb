@@ -11,7 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140125175238) do
+ActiveRecord::Schema.define(version: 20140201044254) do
+
+  create_table "playlist_posts", force: true do |t|
+    t.integer  "playlist_id"
+    t.integer  "post_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "playlist_songs", force: true do |t|
     t.integer  "playlist_id"
@@ -41,7 +48,18 @@ ActiveRecord::Schema.define(version: 20140125175238) do
     t.string   "picture_url"
     t.string   "artist"
     t.string   "title"
+    t.datetime "post_date"
   end
+
+  create_table "sessions", force: true do |t|
+    t.string   "session_id", null: false
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true
+  add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at"
 
   create_table "songs", force: true do |t|
     t.string   "name"

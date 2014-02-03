@@ -1,6 +1,18 @@
-<%- model_class = Post -%>
 <div class="page-header">
-  <h2>Posts (Local DB)</h2>
+  <h2>Posts</h2>
+</div>
+<div>
+	<b>Current user: </b><%= @user.name %>
+</div>
+<div>
+	<%= link_to("Add Playlist", new_playlist_path) %>
+	<%= form_for :playlist do %>
+		<%= collection_select(:playlist, :id, Playlist.all, :id, :name, {}, {:onchange => "this.form.submit()"}) %>
+	<% end %>
+</div>
+<div>
+	<%= link_to 'Clear', '/posts/empty_db' %>
+	<%= link_to 'Import', '/you2mp3/food?id=3' %>
 </div>
 <div>
 	<%= link_to 'Previous', url_for(:page => @fbposts.previous_page_params) %>
@@ -12,6 +24,7 @@
       <th>ID</th>
       <th>Picture URL</th>
       <th>Details</th>
+      <th>Post Date</th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
@@ -26,7 +39,10 @@
         	<b>VIDEO: </b><%= link_to("watch", post.link_url, :target => 'blank') %><br/>
         	<b>FB ID: </b><%= post.facebook_id %>
         </td>
+        <td><%= post.post_date %></td>
         <td>
+          <%= link_to t('.add', :default => t("helpers.links.add")),
+          			add_to_playlist_post_path(post), :class => 'btn btn-mini' %>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_post_path(post), :class => 'btn btn-mini' %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
@@ -39,7 +55,3 @@
     <% end %>
   </tbody>
 </table>
-
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_post_path,
-            :class => 'btn btn-primary' %>
