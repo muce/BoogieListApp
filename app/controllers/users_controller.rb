@@ -1,6 +1,9 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-
+  before_action do
+    set_nav_selected(3)
+  end
+  
   # GET /users
   # GET /users.json
   def index

@@ -3,6 +3,6 @@
 //= require angular
 //= require angular-resource
 //= require angular-ui-select2
-//= require main.js
+//= require scripts
 //= require_tree ./angular
 //= require_tree .

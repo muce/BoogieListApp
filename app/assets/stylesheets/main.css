@@ -1,9 +1,54 @@
-ul {
+div.main-body {
+	padding: 36px 14px 0px 14px;
+	background-color: #eff4ed; /*#f4efed; #edeff4;*/
+}
+
+img.post {
+	width: 20px;
+}
+
+ul.horizontal {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 }
 
-li {
+ul.horizontal li {
 	display: inline;
+	background-color: red;
+	font-size: 18px;
+	padding: 0px 4px 0px 4px;
+}
+
+tr.border-top {
+	border-width: 1px 0px 0px 0px;
+	border-style: solid;
+	border-color: #000000;
+}
+
+tr.border-bottom {
+	border-width: 0px 0px 1px 0px;
+	border-style: solid;
+	border-color: #000000;
+}
+
+td.thin {
+	width: 50px;
+}
+
+td.medium {
+	width: 100px
+	text-align: left;
+}
+
+td.wide {
+	width: 400px;
+	text-align: left;
+}
+
+a.title, a.title:visited, a.title:hover {
+	font-weight: bold;
+	color: #dd1111;
+	background-color: transparent;
+	text-decoration: none;
 }

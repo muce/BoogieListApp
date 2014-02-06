@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  limit: 1
+  until: MyString
+  paging_token: MyString
+
+two:
+  limit: 1
+  until: MyString
+  paging_token: MyString

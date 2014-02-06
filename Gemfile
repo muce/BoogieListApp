@@ -14,6 +14,11 @@ gem 'resque', '~> 2.0.0.pre.1', github: 'resque/resque'
 
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 
+gem 'omniauth'
+gem 'omniauth-facebook'
+
+gem 'will_paginate-bootstrap', '1.0.0'
+
 # use Heroku for production server
 # gem 'heroku'
 

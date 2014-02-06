@@ -7,4 +7,8 @@ class ApplicationController < ActionController::Base
     @facebook_cookies = Koala::Facebook::OAuth.new.get_user_from_cookie(cookies)
   end
   
+  def set_nav_selected(val)
+    @nav_selected = val
+  end
+  
 end

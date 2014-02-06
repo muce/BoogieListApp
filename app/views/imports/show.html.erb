@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Limit:</strong>
+  <%= @import.limit %>
+</p>
+
+<p>
+  <strong>Until:</strong>
+  <%= @import.until %>
+</p>
+
+<p>
+  <strong>Paging token:</strong>
+  <%= @import.paging_token %>
+</p>
+
+<%= link_to 'Edit', edit_import_path(@import) %> |
+<%= link_to 'Back', imports_path %>

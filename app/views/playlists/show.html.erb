@@ -1,15 +1,31 @@
-<%- model_class = Playlist -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+  <h1><%= @playlist.name %></h1>
 </div>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:user_id) %>:</strong></dt>
-  <dd><%= @playlist.user_id %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
-  <dd><%= @playlist.name %></dd>
-</dl>
-
+<table>
+	<thead>
+		<tr>
+			<th>Artist</th>
+			<th>Title</th>
+			<th>Duration</th>
+			<th>Listen</th>
+			<th><%=t '.actions', :default => t("helpers.actions") %></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @items.each do |i| %>
+		<tr>
+			<td><%= i.artist %></td>
+			<td><%= i.title %></td>
+			<td>xx:yy</td>
+			<td><%= link_to("youtube", i.link_url, :target => "blank")%></td>
+			<td><%= link_to t('.remove', :default => t("helpers.links.remove")),
+          			remove_from_playlist_post_path(i), :class => 'btn btn-mini' %>
+          	</td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
 <div class="form-actions">
   <%= link_to t('.back', :default => t("helpers.links.back")),
               playlists_path, :class => 'btn'  %>

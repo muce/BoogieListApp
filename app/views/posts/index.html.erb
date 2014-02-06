@@ -1,57 +1,108 @@
-<div class="page-header">
-  <h2>Posts</h2>
+<div class="row clearfix">
+	<div class="col-md-6 column">
+
+		<!-- COL 1 -->
+		<div class="page-header">
+			<h1>Posts</h1>
+		</div>
+
+		<div>
+			<%= link_to("Add Playlist", new_playlist_path) %>
+			<%= form_for :playlist do %>
+			<%= collection_select(:playlist, :id, Playlist.all, :id, :name, {}, {:onchange => "this.form.submit()"}) %>
+			<% end %>
+		</div>
+
+		<div>
+			<%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
+		</div>
+
+		<table class="table-hover table-condensed">
+			<thead>
+				<tr class="border-bottom">
+					<th>Image</th>
+					<th>Descripton</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% @posts.each do |post| %>
+				<tr class="border-top">
+					<td class="medium"> <%= link_to(image_tag(post.picture_url), post.link_url, :target => 'blank') %> </td>
+					<td class="wide"> <%= link_to(post.artist+' - '+post.title, post.link_url, :target => 'blank', :class => 'title') %>
+					<br/>
+					<%= post.description %>
+					<br/>
+					<ul class="list-inline">
+						<li>
+							<%= link_to("watch", post.link_url, :target => 'blank') %>
+						</li>
+						<li>
+							<%= link_to("info", post.link_url, :target => 'blank') %>
+						</li>
+						<li>
+							<%= link_to("add", add_to_playlist_post_path(post), :class => 'btn btn-mini') %>
+						</li>
+						<li>
+							<%= link_to("edit", edit_post_path(post), :class => 'btn btn-mini') %>
+						</li>
+						<li>
+							<%= link_to("remove", add_to_playlist_post_path(post), :class => 'btn btn-mini') %>
+						</li>
+					</ul></td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+
+		<div>
+			<%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
+		</div>
+
+	</div>
+	<div class="col-md-6 column">
+
+		<!-- COL 2 -->
+		<div class="page-header">
+			<h1>Playlist: <small>playlist 1</small></h1>
+		</div>
+
+		<table class="table-hover table-condensed">
+			<thead>
+				<tr class="border-bottom">
+					<th>Image</th>
+					<th>Descripton</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% @posts.each do |post| %>
+				<tr class="border-top">
+					<td class="medium"> <%= link_to(image_tag(post.picture_url), post.link_url, :target => 'blank') %> </td>
+					<td class="wide"> <%= link_to(post.artist+' - '+post.title, post.link_url, :target => 'blank', :class => 'title') %>
+					<br/>
+					<%= post.description %>
+					<br/>
+					<ul class="list-inline">
+						<li>
+							<%= link_to("watch", post.link_url, :target => 'blank') %>
+						</li>
+						<li>
+							<%= link_to("info", post.link_url, :target => 'blank') %>
+						</li>
+						<li>
+							<%= link_to("add", add_to_playlist_post_path(post), :class => 'btn btn-mini') %>
+						</li>
+						<li>
+							<%= link_to("edit", edit_post_path(post), :class => 'btn btn-mini') %>
+						</li>
+						<li>
+							<%= link_to("remove", add_to_playlist_post_path(post), :class => 'btn btn-mini') %>
+						</li>
+					</ul></td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+
+	</div>
 </div>
-<div>
-	<b>Current user: </b><%= @user.name %>
-</div>
-<div>
-	<%= link_to("Add Playlist", new_playlist_path) %>
-	<%= form_for :playlist do %>
-		<%= collection_select(:playlist, :id, Playlist.all, :id, :name, {}, {:onchange => "this.form.submit()"}) %>
-	<% end %>
-</div>
-<div>
-	<%= link_to 'Clear', '/posts/empty_db' %>
-	<%= link_to 'Import', '/you2mp3/food?id=3' %>
-</div>
-<div>
-	<%= link_to 'Previous', url_for(:page => @fbposts.previous_page_params) %>
-	<%= link_to 'Next', url_for(:page => @fbposts.next_page_params) %>
-</div>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Picture URL</th>
-      <th>Details</th>
-      <th>Post Date</th>
-      <th><%=t '.actions', :default => t("helpers.actions") %></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @posts.each do |post| %>
-      <tr>
-        <td><%= link_to post.id, post_path(post) %></td>
-        <td><%= image_tag(post.picture_url) %></td>
-        <td>
-        	<b>ARTIST: </b><%= post.artist %><br/>
-        	<b>TITLE: </b><%= post.title %><br/>
-        	<b>VIDEO: </b><%= link_to("watch", post.link_url, :target => 'blank') %><br/>
-        	<b>FB ID: </b><%= post.facebook_id %>
-        </td>
-        <td><%= post.post_date %></td>
-        <td>
-          <%= link_to t('.add', :default => t("helpers.links.add")),
-          			add_to_playlist_post_path(post), :class => 'btn btn-mini' %>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_post_path(post), :class => 'btn btn-mini' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      post_path(post),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-mini btn-danger' %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+

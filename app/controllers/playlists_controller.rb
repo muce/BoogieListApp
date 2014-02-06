@@ -1,15 +1,23 @@
 class PlaylistsController < ApplicationController
   before_action :set_playlist, only: [:show, :edit, :update, :destroy]
+  before_action do
+    set_nav_selected(2)
+  end
 
   # GET /playlists
   # GET /playlists.json
   def index
-    @playlists = Playlist.all
+    @playlists = session[:user].playlists
+    @items = []
+    @playlists.each do |p|
+      @items << p.posts
+    end
   end
 
   # GET /playlists/1
   # GET /playlists/1.json
   def show
+    @items = @playlist.posts
   end
 
   # GET /playlists/new
@@ -61,7 +69,9 @@ class PlaylistsController < ApplicationController
     end
   end
 
+
   private
+  
     # Use callbacks to share common setup or constraints between actions.
     def set_playlist
       @playlist = Playlist.find(params[:id])

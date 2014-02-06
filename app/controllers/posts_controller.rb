@@ -1,20 +1,23 @@
 require 'uri'
 
 class PostsController < ApplicationController
-
+  before_action do
+    set_nav_selected(1)
+  end
+  
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all
+    puts "POSTS CONTROLLER"
+
+    @posts = Post.paginate(:page => params[:page]).order(post_date: :asc)
     # @playlists = Playlist.all
     
-    # auth established, now do a graph call
     @api = Koala::Facebook::API.new(session[:access_token])
     @feed_limit = 25
     begin
-      @fbposts = params[:page] ? @api.get_page(params[:page]) : @api.get_connections(Facebook::CONFIG['boogie_tunes_id'], "feed")
-      session[:user] = check_user(@api.get_object("me"))
-      import_from_fb
+      # @fbposts = params[:page] ? @api.get_page(params[:page]) : @api.get_connections(Facebook::CONFIG['boogie_tunes_id'], "feed")
+      # import_from_fb
       @user = session[:user]
       @playlists = Playlist.where(:user_id => @user.id)
       session[:current_playlist_id] = @playlists.first.id
@@ -26,6 +29,7 @@ class PostsController < ApplicationController
     respond_to do |format|
      format.html {   }
     end
+    
   end
 
   # GET /posts/1
@@ -92,13 +96,25 @@ class PostsController < ApplicationController
   end
   
   def add_to_playlist
+    # TODO: ensure uniqueness of post within playlist
     puts "ADD POST "+params[:id].to_s+" TO PLAYLIST "+session[:current_playlist_id].to_s
     @item = PlaylistPost.new(post_id: params[:id], playlist_id: session[:current_playlist_id])
     @item.save
     redirect_to posts_url
   end
+  
+  def remove_from_playlist
+    puts "REMOVE "+params[:id]
+  end
 
   # Import list of FB posts into local DB
+  # TODO: import all posts at once, or just check for new posts
+=begin
+ <div>
+  <%= link_to 'Previous', url_for(:page => @fbposts.previous_page_params) %>
+  <%= link_to 'Next', url_for(:page => @fbposts.next_page_params) %>
+</div> 
+=end
   def import_from_fb
     @fbposts.each do |post|
       if !Post.find_by facebook_id: post['id']
@@ -138,19 +154,19 @@ class PostsController < ApplicationController
     return ok
   end
   
-  # Return array of youtube URLs from input string
+  # Return first youtube URL from input string
   def strip_youtube_urls(str)
     uris = ['http', 'https']
-  urls = []
-  if !str.blank?
-    str.scan(URI.regexp(uris)) do |*matches|
-      urls << $&
+    urls = []
+    if !str.blank?
+      str.scan(URI.regexp(uris)) do |*matches|
+        urls << $&
+      end
     end
-  end
-  if urls.any?
-    return urls.first
-  else
-    return ""
+    if urls.any?
+      return urls.first
+    else
+      return ""
     end
   end
   
@@ -163,19 +179,6 @@ class PostsController < ApplicationController
       end
     end
     return fields
-  end
-  
-  # Lookup FB user and add to DB if non existent
-  def check_user(u)
-     if User.exists?(facebook_id: u['id'])
-       user = User.find_by facebook_id: u['id']
-       puts "found user "+user.name
-     else
-       user = User.new(name: u['name'], facebook_id: u['id'])
-       user.save
-       puts "created user "+user.name
-     end
-     return user
   end
   
   private
