@@ -7,7 +7,8 @@ class PlaylistsController < ApplicationController
   # GET /playlists
   # GET /playlists.json
   def index
-    @playlists = session[:user].playlists
+    # @playlists = session[:user].playlists.all
+    @playlists = Playlist.all
     @items = []
     @playlists.each do |p|
       @items << p.posts

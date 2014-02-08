@@ -8,26 +8,13 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    puts "POSTS CONTROLLER"
-
     @posts = Post.paginate(:page => params[:page]).order(post_date: :asc)
-    # @playlists = Playlist.all
-    
-    @api = Koala::Facebook::API.new(session[:access_token])
-    @feed_limit = 25
-    begin
-      # @fbposts = params[:page] ? @api.get_page(params[:page]) : @api.get_connections(Facebook::CONFIG['boogie_tunes_id'], "feed")
-      # import_from_fb
-      @user = session[:user]
-      @playlists = Playlist.where(:user_id => @user.id)
-      session[:current_playlist_id] = @playlists.first.id
-      # empty_db
-    rescue Exception=>ex
-      puts ex.message
-    end
+    @user = session[:user]
+    @playlists = Playlist.where(:user_id => @user.id)
+    session[:current_playlist_id] = @playlists.first.id
     
     respond_to do |format|
-     format.html {   }
+      format.html {   }
     end
     
   end
@@ -100,85 +87,12 @@ class PostsController < ApplicationController
     puts "ADD POST "+params[:id].to_s+" TO PLAYLIST "+session[:current_playlist_id].to_s
     @item = PlaylistPost.new(post_id: params[:id], playlist_id: session[:current_playlist_id])
     @item.save
+    Resque.enqueue(EncoderWorker, params[:id])
     redirect_to posts_url
   end
   
   def remove_from_playlist
     puts "REMOVE "+params[:id]
-  end
-
-  # Import list of FB posts into local DB
-  # TODO: import all posts at once, or just check for new posts
-=begin
- <div>
-  <%= link_to 'Previous', url_for(:page => @fbposts.previous_page_params) %>
-  <%= link_to 'Next', url_for(:page => @fbposts.next_page_params) %>
-</div> 
-=end
-  def import_from_fb
-    @fbposts.each do |post|
-      if !Post.find_by facebook_id: post['id']
-        if is_youtube_post(post)
-          p = Post.new(picture_url: post['picture'], facebook_id: post['id'], name: post['name'], description: post['description'], link_url: post['link'], source_url: post['source'], message: post['message'], post_date: post['created_time'])
-          if p.link_url.blank?
-            p.link_url = strip_youtube_urls(post['message'])
-          end
-          ary = create_artist_and_title(post['name'])
-          p.artist = ary.first
-          p.title = ary.last
-          p.save
-        end
-      end
-    end
-  end
-  
-  # Empty all posts
-  def empty_db
-    Post.all.each do |p|
-      p.destroy
-    end
-  end
-  
-  # Test for existence of youtube url in source, link, message
-  def is_youtube_post(p)
-    ok = false
-    if !p['source'].blank? && p['source'].include?('youtube')
-      ok = true
-    end
-    if !p['link'].blank? && p['link'].include?('youtube')
-      ok = true
-    end
-    if !p['message'].blank? && p['message'].include?('youtube')
-      ok = true
-    end
-    return ok
-  end
-  
-  # Return first youtube URL from input string
-  def strip_youtube_urls(str)
-    uris = ['http', 'https']
-    urls = []
-    if !str.blank?
-      str.scan(URI.regexp(uris)) do |*matches|
-        urls << $&
-      end
-    end
-    if urls.any?
-      return urls.first
-    else
-      return ""
-    end
-  end
-  
-  # Attempt to split name into artist and title fields
-  def create_artist_and_title(str)
-    fields = ["", ""]
-  if !str.blank?
-    if str.include?('-')
-      fields = str.split('-', 2)
-      end
-    end
-    return fields
   end
   
   private

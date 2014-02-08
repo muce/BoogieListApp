@@ -1,13 +1,7 @@
 BoogieListApp::Application.routes.draw do
 
-  root :to => "posts#index"
-
-  get '/auth/:provider/callback', to: 'sessions#create'
-  get '/signout', to: 'sessions#destroy', :as => :signout
-  get '/signin', to:  'sessions#new', :as => :signin
-   
-  resources :playlist_posts
-
+  root :to => "home#login"
+  
   resources :posts do
     member do
       get :add_to_playlist
@@ -26,6 +20,9 @@ BoogieListApp::Application.routes.draw do
 
   resources :playlists
   resources :users
+   
+  resources :playlist_posts
+  resources :playlist_users
 
   get "home/callback", to: "home#callback"
   get "/users", to: "users#index"

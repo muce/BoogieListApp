@@ -9,7 +9,7 @@
 		<div>
 			<%= link_to("Add Playlist", new_playlist_path) %>
 			<%= form_for :playlist do %>
-			<%= collection_select(:playlist, :id, Playlist.all, :id, :name, {}, {:onchange => "this.form.submit()"}) %>
+				<%= collection_select(:playlist, :id, Playlist.all, :id, :name, {}, {:onchange => "this.form.submit()"}) %>
 			<% end %>
 		</div>
 

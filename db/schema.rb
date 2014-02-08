@@ -11,27 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140204123842) do
+ActiveRecord::Schema.define(version: 20140204105029) do
 
   create_table "imports", force: true do |t|
     t.integer  "limit"
     t.string   "until"
     t.string   "paging_token"
+    t.boolean  "completed"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "completed"
   end
 
   create_table "playlist_posts", force: true do |t|
     t.integer  "playlist_id"
     t.integer  "post_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "playlist_songs", force: true do |t|
-    t.integer  "playlist_id"
-    t.integer  "song_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -47,17 +40,18 @@ ActiveRecord::Schema.define(version: 20140204123842) do
     t.string   "facebook_id"
     t.string   "name"
     t.string   "description"
+    t.string   "artist"
+    t.string   "title"
+    t.datetime "post_date"
     t.string   "link_url"
     t.string   "source_url"
+    t.string   "picture_url"
+    t.string   "mp3_url"
     t.string   "message"
     t.integer  "likes"
     t.integer  "comments"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "picture_url"
-    t.string   "artist"
-    t.string   "title"
-    t.datetime "post_date"
   end
 
   create_table "sessions", force: true do |t|
@@ -69,16 +63,6 @@ ActiveRecord::Schema.define(version: 20140204123842) do
 
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at"
-
-  create_table "songs", force: true do |t|
-    t.string   "name"
-    t.string   "description"
-    t.string   "youtube_url"
-    t.string   "mp3_url"
-    t.string   "picture_url"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "users", force: true do |t|
     t.string   "name"

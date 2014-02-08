@@ -57,6 +57,7 @@ class ImportsController < ApplicationController
   # DELETE /imports/1
   # DELETE /imports/1.json
   def destroy
+    puts "IMPORT DESTROY "+@import.id
     @import.destroy
     respond_to do |format|
       format.html { redirect_to imports_url }
