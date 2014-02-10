@@ -1,7 +1,8 @@
 <div class="row clearfix">
-	<div class="col-md-6 column">
+	
+	<!-- COL 1 -->
+	<div class="column col-md-6">
 
-		<!-- COL 1 -->
 		<div class="page-header">
 			<h1>Posts</h1>
 		</div>
@@ -34,19 +35,29 @@
 					<br/>
 					<ul class="list-inline">
 						<li>
-							<%= link_to("watch", post.link_url, :target => 'blank') %>
+							<%= link_to(post.link_url, :target => 'blank') do %>
+							<i class="fa fa-youtube-play fa-lg"></i>
+							<% end %>
 						</li>
 						<li>
-							<%= link_to("info", post.link_url, :target => 'blank') %>
+							<%= link_to(post.link_url, :target => 'blank') do %>
+							<i class="fa fa-info-circle fa-lg"></i>
+							<% end %>
 						</li>
 						<li>
-							<%= link_to("add", add_to_playlist_post_path(post), :class => 'btn btn-mini') %>
+							<%= link_to(add_to_playlist_post_path(post)) do %>
+							<i class="fa fa-plus-circle fa-lg"></i>
+							<% end %>
 						</li>
 						<li>
-							<%= link_to("edit", edit_post_path(post), :class => 'btn btn-mini') %>
+							<%= link_to(edit_post_path(post)) do %>
+							<i class="fa fa-search fa-lg"></i>
+							<% end %>
 						</li>
 						<li>
-							<%= link_to("remove", add_to_playlist_post_path(post), :class => 'btn btn-mini') %>
+							<%= link_to(add_to_playlist_post_path(post)) do %>
+							<i class="fa fa-minus-circle fa-lg"></i>
+							<% end %>
 						</li>
 					</ul></td>
 				</tr>
@@ -59,9 +70,10 @@
 		</div>
 
 	</div>
-	<div class="col-md-6 column">
+	
+	<!-- COL 2 -->
+	<div class="column col-md-6">
 
-		<!-- COL 2 -->
 		<div class="page-header">
 			<h1>Playlist: <small>playlist 1</small></h1>
 		</div>

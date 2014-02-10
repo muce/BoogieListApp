@@ -1,34 +1,16 @@
 source 'https://rubygems.org'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
-
-# FB library
+gem 'font-awesome-less'
 gem 'koala', '1.3.0'
-
-# Use sqlite3 as the database for Active Record
 gem 'sqlite3'
-
-# Use resque for scheduled youtube to mp3 conversion jobs
 gem 'resque', '~> 2.0.0.pre.1', github: 'resque/resque'
-
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
-
-gem 'omniauth'
 gem 'omniauth-facebook'
-
 gem 'will_paginate-bootstrap', '1.0.0'
-
-# use Heroku for production server
 # gem 'heroku'
-
-# use Passenger for development and test
-group :development, :test do
-  gem "passenger", "~> 4.0.33"  
-end
-
 gem "therubyracer"
-gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
+gem "less-rails", '>= 2.4.2' #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem "twitter-bootstrap-rails"
 
 # Use SCSS for stylesheets
@@ -46,25 +28,10 @@ gem 'coffee-rails', '~> 4.0.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
-
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
 end
-
-# Use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.1.2'
-
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano', group: :development
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]
