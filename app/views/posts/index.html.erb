@@ -1,120 +1,110 @@
 <div class="row clearfix">
-	
-	<!-- COL 1 -->
-	<div class="column col-md-6">
+    <div class="col-md-12 column">
+        <div class="page-header">
+            <h1> Example page header <small>Subtext for header</small></h1>
+        </div>
 
-		<div class="page-header">
-			<h1>Posts</h1>
-		</div>
+        <div>
+            <%= link_to("Add Playlist", new_playlist_path) %>
+            <%= form_for :playlist do %>
+            <%= collection_select(:playlist, :id, Playlist.all, :id, :name, {}, {:onchange => "this.form.submit()"}) %>
+            <% end %>
+        </div>
+    </div>
+</div>
 
-		<div>
-			<%= link_to("Add Playlist", new_playlist_path) %>
-			<%= form_for :playlist do %>
-				<%= collection_select(:playlist, :id, Playlist.all, :id, :name, {}, {:onchange => "this.form.submit()"}) %>
-			<% end %>
-		</div>
+<div class="row clearfix">
 
-		<div>
-			<%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
-		</div>
+    <!-- COL 1 -->
+    <div class="column col-md-6">
 
-		<table class="table-hover table-condensed">
-			<thead>
-				<tr class="border-bottom">
-					<th>Image</th>
-					<th>Descripton</th>
-				</tr>
-			</thead>
-			<tbody>
-				<% @posts.each do |post| %>
-				<tr class="border-top">
-					<td class="medium"> <%= link_to(image_tag(post.picture_url), post.link_url, :target => 'blank') %> </td>
-					<td class="wide"> <%= link_to(post.artist+' - '+post.title, post.link_url, :target => 'blank', :class => 'title') %>
-					<br/>
-					<%= post.description %>
-					<br/>
-					<ul class="list-inline">
-						<li>
-							<%= link_to(post.link_url, :target => 'blank') do %>
-							<i class="fa fa-youtube-play fa-lg"></i>
-							<% end %>
-						</li>
-						<li>
-							<%= link_to(post.link_url, :target => 'blank') do %>
-							<i class="fa fa-info-circle fa-lg"></i>
-							<% end %>
-						</li>
-						<li>
-							<%= link_to(add_to_playlist_post_path(post)) do %>
-							<i class="fa fa-plus-circle fa-lg"></i>
-							<% end %>
-						</li>
-						<li>
-							<%= link_to(edit_post_path(post)) do %>
-							<i class="fa fa-search fa-lg"></i>
-							<% end %>
-						</li>
-						<li>
-							<%= link_to(add_to_playlist_post_path(post)) do %>
-							<i class="fa fa-minus-circle fa-lg"></i>
-							<% end %>
-						</li>
-					</ul></td>
-				</tr>
-				<% end %>
-			</tbody>
-		</table>
+        <div class="page-header">
+            <h1>Posts</h1>
+        </div>
 
-		<div>
-			<%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
-		</div>
+        <div>
+            <%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
+        </div>
 
-	</div>
-	
-	<!-- COL 2 -->
-	<div class="column col-md-6">
+        <table class="table-hover">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Descripton</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @posts.each do |post| %>
+                <tr class="border-bottom">
+                    <td><%= link_to(image_tag(post.picture_url), post.link_url, :target => 'blank') %></td>
+                    <td> <%= link_to(post.artist+' - '+post.title, post.link_url, :target => 'blank', :class => 'title') %>
+                    <br/>
+                    <%= post.description %>
+                    <br/>
+                    <ul class="list-inline">
+                        <li>
+                            <%= link_to(post.link_url, :target => 'blank') do %>
+                            <i class="fa fa-youtube-play fa-lg">watch</i>
+                            <% end %>
+                        </li>
+                        <li>
+                            <%= link_to(post.link_url, :target => 'blank') do %>
+                            <i class="fa fa-info-circle fa-lg">info</i>
+                            <% end %>
+                        </li>
+                        <li>
+                            <%= link_to(add_to_playlist_post_path(post)) do %>
+                            <i class="fa fa-plus-circle fa-lg">add</i>
+                            <% end %>
+                        </li>
+                        <li>
+                            <%= link_to(edit_post_path(post)) do %>
+                            <i class="fa fa-search fa-lg">edit</i>
+                            <% end %>
+                        </li>
+                    </ul></td>
+                </tr>
+                <% end %>
+            </tbody>
+        </table>
 
-		<div class="page-header">
-			<h1>Playlist: <small>playlist 1</small></h1>
-		</div>
+        <div>
+            <%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
+        </div>
 
-		<table class="table-hover table-condensed">
-			<thead>
-				<tr class="border-bottom">
-					<th>Image</th>
-					<th>Descripton</th>
-				</tr>
-			</thead>
-			<tbody>
-				<% @posts.each do |post| %>
-				<tr class="border-top">
-					<td class="medium"> <%= link_to(image_tag(post.picture_url), post.link_url, :target => 'blank') %> </td>
-					<td class="wide"> <%= link_to(post.artist+' - '+post.title, post.link_url, :target => 'blank', :class => 'title') %>
-					<br/>
-					<%= post.description %>
-					<br/>
-					<ul class="list-inline">
-						<li>
-							<%= link_to("watch", post.link_url, :target => 'blank') %>
-						</li>
-						<li>
-							<%= link_to("info", post.link_url, :target => 'blank') %>
-						</li>
-						<li>
-							<%= link_to("add", add_to_playlist_post_path(post), :class => 'btn btn-mini') %>
-						</li>
-						<li>
-							<%= link_to("edit", edit_post_path(post), :class => 'btn btn-mini') %>
-						</li>
-						<li>
-							<%= link_to("remove", add_to_playlist_post_path(post), :class => 'btn btn-mini') %>
-						</li>
-					</ul></td>
-				</tr>
-				<% end %>
-			</tbody>
-		</table>
+    </div>
 
-	</div>
+    <!-- COL 2 -->
+    <div class="column col-md-6">
+
+        <div class="page-header">
+            <h1><%= @playlist.name %></h1>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Artist</th>
+                    <th>Title</th>
+                    <th>Duration</th>
+                    <th>Listen</th>
+                    <th><%= t '.actions', :default => t("helpers.actions") %></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @items.each do |i| %>
+                <tr>
+                    <td><%= i.artist %></td>
+                    <td><%= i.title %></td>
+                    <td>xx:yy</td>
+                    <td><%= link_to("youtube", i.link_url, :target => "blank")%></td>
+                    <td><%= link_to t('.remove', :default => t("helpers.links.remove")),
+                    remove_from_playlist_post_path(i), :class => 'btn btn-mini' %> </td>
+                </tr>
+                <% end %>
+            </tbody>
+        </table>
+
+    </div>
 </div>
 

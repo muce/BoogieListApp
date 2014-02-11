@@ -1,4 +1,4 @@
-require 'uri'
+require 'xmpp4r_facebook'
 
 class PostsController < ApplicationController
   before_action do
@@ -11,7 +11,15 @@ class PostsController < ApplicationController
     @posts = Post.paginate(:page => params[:page]).order(post_date: :asc)
     @user = session[:user]
     @playlists = Playlist.where(:user_id => @user.id)
-    session[:current_playlist_id] = @playlists.first.id
+    if session[:current_playlist_id].blank?
+      if @playlists.size > 0
+        session[:current_playlist_id] = @playlists.first.id
+      else
+        session[:current_playlist_id] = 1  
+      end
+    end
+    @playlist = @playlists.first
+    @items = @playlist.posts
     
     respond_to do |format|
       format.html {   }
@@ -83,16 +91,44 @@ class PostsController < ApplicationController
   end
   
   def add_to_playlist
-    # TODO: ensure uniqueness of post within playlist
-    puts "ADD POST "+params[:id].to_s+" TO PLAYLIST "+session[:current_playlist_id].to_s
-    @item = PlaylistPost.new(post_id: params[:id], playlist_id: session[:current_playlist_id])
-    @item.save
-    Resque.enqueue(EncoderWorker, params[:id])
+    if !Playlist.find(session[:current_playlist_id]).posts.exists?(params[:id])
+      @item = PlaylistPost.new(post_id: params[:id], playlist_id: session[:current_playlist_id])
+      @item.save
+      send_email
+      send_fb_message
+    end
     redirect_to posts_url
   end
   
   def remove_from_playlist
-    puts "REMOVE "+params[:id]
+    @item = PlaylistPost.find_by(post_id: params[:id], playlist_id: session[:current_playlist_id])
+    @item.destroy
+    redirect_to posts_url
+  end
+  
+  def send_email
+    # Resque.enqueue(EncoderWorker, params[:id])
+    UserMailer.send_mail(session[:user].name).deliver
+  end
+  
+  def send_fb_message
+    puts "SEND FB MESSAGE"
+    sender_chat_id = "-538006773@chat.facebook.com"
+    receiver_chat_id = "-#{session[:user].facebook_id}@chat.facebook.com"
+    message_body = "test message"
+    message_subject = "test subject"
+     
+    jabber_message = Jabber::Message.new(receiver_chat_id, message_body)
+    jabber_message.subject = message_subject
+     
+    client = Jabber::Client.new(Jabber::JID.new(sender_chat_id))
+    client.connect
+    client.auth_sasl(Jabber::SASL::XFacebookPlatform.new(client,
+                     Facebook::CONFIG['app_id'], 
+                     session[:access_token],
+                     Facebook::CONFIG['secret_key']), nil)
+    client.send(jabber_message)
+    client.close
   end
   
   private

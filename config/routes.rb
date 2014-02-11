@@ -7,8 +7,6 @@ BoogieListApp::Application.routes.draw do
       get :add_to_playlist
       get :remove_from_playlist
       get :set_current_playlist
-      get :empty_db
-      get :import_from_db
     end
   end
   
