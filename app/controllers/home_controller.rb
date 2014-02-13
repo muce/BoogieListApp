@@ -1,6 +1,10 @@
 class HomeController < ActionController::Base
   layout 'application'
   
+  def index
+    
+  end
+  
   def login
     if params[:code]
       redirect_to(posts_url)

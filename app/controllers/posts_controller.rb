@@ -18,8 +18,10 @@ class PostsController < ApplicationController
         session[:current_playlist_id] = 1  
       end
     end
-    @playlist = @playlists.first
-    @items = @playlist.posts
+    if !@playlists.blank?
+      @playlist = @playlists.first  
+      @items = @playlist.posts
+    end
     
     respond_to do |format|
       format.html {   }
@@ -94,8 +96,10 @@ class PostsController < ApplicationController
     if !Playlist.find(session[:current_playlist_id]).posts.exists?(params[:id])
       @item = PlaylistPost.new(post_id: params[:id], playlist_id: session[:current_playlist_id])
       @item.save
-      send_email
-      send_fb_message
+      post = Post.find(params[:id])
+      rip_audio(post)
+      # send_email(post)
+      # send_fb_message(post)
     end
     redirect_to posts_url
   end
@@ -106,21 +110,32 @@ class PostsController < ApplicationController
     redirect_to posts_url
   end
   
-  def send_email
+  def rip_audio(post)
+    puts "POSTS CONTROLLER rip_audio "+post.id.to_s
+    d = Rails.root.join('public', 'audio').to_s
+    puts d+"/"+post.facebook_id+'.mp3'
+    # post.delay.rip
+  end
+  
+  def send_email(post)
     # Resque.enqueue(EncoderWorker, params[:id])
     UserMailer.send_mail(session[:user].name).deliver
   end
   
-  def send_fb_message
+  def send_fb_message(post)
     puts "SEND FB MESSAGE"
-    sender_chat_id = "-538006773@chat.facebook.com"
-    receiver_chat_id = "-#{session[:user].facebook_id}@chat.facebook.com"
+    sender_chat_id = "-100007673834464@chat.facebook.com"
+    receiver_chat_id = "-538006773@chat.facebook.com"
     message_body = "test message"
     message_subject = "test subject"
-     
+    
     jabber_message = Jabber::Message.new(receiver_chat_id, message_body)
     jabber_message.subject = message_subject
-     
+    
+    puts "sender_chat_id "+sender_chat_id
+    puts "receiver_chat_id "+receiver_chat_id
+    
+    # TODO: Use ENV for app_id and secret_key
     client = Jabber::Client.new(Jabber::JID.new(sender_chat_id))
     client.connect
     client.auth_sasl(Jabber::SASL::XFacebookPlatform.new(client,

@@ -5,18 +5,20 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>NAME</th>
-      <th>FACEBOOK ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Provider</th>
+      <th>UID</th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%= link_to user.id, user_path(user) %></td>
         <td><%= user.name %></td>
-        <td><%= user.facebook_id %></td>
+        <td><%= user.email %></td>
+        <td><%= user.provider %></td>
+        <td><%= user.uid %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_user_path(user), :class => 'btn btn-mini' %>

@@ -31,7 +31,7 @@ class ImportsController < ApplicationController
 
     respond_to do |format|
       if @import.save
-        format.html { redirect_to @import, notice: 'Import was successfully created.' }
+        format.html { redirect_to imports_path, notice: 'Import was successfully created.' }
         format.json { render action: 'show', status: :created, location: @import }
       else
         format.html { render action: 'new' }
@@ -68,7 +68,8 @@ class ImportsController < ApplicationController
   def run
     puts "IMPORT RUN "+params[:id]
     import = Import.find(params[:id])
-    query = Facebook::CONFIG['boogie_tunes_id']+"/feed?limit="+import.limit.to_s+"&until="+import.until+"&__paging_token="+Facebook::CONFIG['boogie_tunes_id']+"_"+import.paging_token+"&access_token="+session[:access_token]
+    group_id = '314642735316936'
+    # query = Facebook::CONFIG['boogie_tunes_id']+"/feed?limit="+import.limit.to_s+"&until="+import.until+"&__paging_token="+Facebook::CONFIG['boogie_tunes_id']+"_"+import.paging_token+"&access_token="+session[:access_token]
     query = "feed"
     if !import.limit.blank?
       query += "?limit="+import.limit.to_s
@@ -77,12 +78,12 @@ class ImportsController < ApplicationController
       query += "&until="+import.until
     end
     if !import.paging_token.blank?
-      query += "&__paging_token="+Facebook::CONFIG['boogie_tunes_id']+"_"+import.paging_token
+      query += "&__paging_token="+group_id+"_"+import.paging_token
     end
     puts "QUERY "+query
     begin
       api = Koala::Facebook::API.new(session[:access_token])
-      posts = params[:page] ? api.get_page(params[:page]) : api.get_connections(Facebook::CONFIG['boogie_tunes_id'], query)
+      posts = params[:page] ? api.get_page(params[:page]) : api.get_connections(group_id, query)
     rescue Exception=>ex
       puts ex.message
       puts "ERROR!!!!!"
@@ -97,7 +98,7 @@ class ImportsController < ApplicationController
       end
       import.update(completed: true)
       add_next(posts.next_page_params)
-      redirect_to(import_url)
+      redirect_to imports_path
       return
     else
       puts "POSTS RETURN NOT OK"
@@ -110,7 +111,17 @@ class ImportsController < ApplicationController
   def import_post(post)
     if !Post.find_by facebook_id: post['id']
       if is_youtube_post(post)
-        p = Post.new(picture_url: post['picture'], facebook_id: post['id'], name: post['name'], description: post['description'], link_url: post['link'], source_url: post['source'], message: post['message'], post_date: post['created_time'])
+        puts post['likes'].to_s
+        p = Post.new(picture_url: post['picture'], 
+                     facebook_id: post['id'], 
+                     name: post['name'], 
+                     description: post['description'], 
+                     link_url: post['link'], 
+                     source_url: post['source'], 
+                     message: post['message'], 
+                     post_date: post['created_time'], 
+                     likes: post['likes'], 
+                     comments: post['comments'])
         if p.link_url.blank?
           p.link_url = strip_youtube_url(post['message'])
         end

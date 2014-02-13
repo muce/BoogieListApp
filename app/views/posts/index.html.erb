@@ -76,7 +76,7 @@
 
     <!-- COL 2 -->
     <div class="column col-md-6">
-
+	<% if !@playlist.blank? %>
         <div class="page-header">
             <h1><%= @playlist.name %></h1>
         </div>
@@ -104,7 +104,7 @@
                 <% end %>
             </tbody>
         </table>
-
+	<% end %>
     </div>
 </div>
 

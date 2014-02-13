@@ -25,7 +25,8 @@ BoogieListApp::Application.configure do
     :user_name      => 'imuce9@gmail.com',
     :password       => 'N0rthW1ckP4rk!'
   }
-
+  
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   
