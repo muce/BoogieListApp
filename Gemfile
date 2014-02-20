@@ -12,6 +12,7 @@ gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'omniauth-google-oauth2'
 gem 'will_paginate-bootstrap', '1.0.0'
 # gem 'heroku'
 gem "therubyracer"

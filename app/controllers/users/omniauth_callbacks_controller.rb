@@ -1,11 +1,5 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def facebook
-    puts "OMNIAUTH CALLBACK FACEBOOK"
-    puts "AUTH HASH BEGIN"
-    request.env['omniauth.auth'].each do |k,v|
-      puts k.to_s+":    "+v.to_s
-    end
-    puts "AUTH HASH END"
     @user = User.find_for_facebook_oauth(request.env["omniauth.auth"], current_user)
     session[:user] = @user
     session[:access_token] = request.env['omniauth.auth']['credentials']['token']
@@ -20,5 +14,17 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       session["devise.facebook_data"] = request.env["omniauth.auth"]
       redirect_to posts_url
     end
+  end
+
+  def google_oauth2
+      @user = User.find_for_google_oauth2(request.env["omniauth.auth"], current_user)
+      
+      if @user.persisted?
+        flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "Google"
+        sign_in_and_redirect @user, :event => :authentication
+      else
+        session["devise.google_data"] = request.env["omniauth.auth"]
+        redirect_to new_user_registration_url
+      end
   end
 end

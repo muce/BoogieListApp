@@ -1,6 +1,7 @@
 BoogieListApp::Application.routes.draw do
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+  
   # root :to => "home#login"
   root :to => "home#index"
   
@@ -20,7 +21,7 @@ BoogieListApp::Application.routes.draw do
 
   resources :playlists
   resources :users
-   
+  
   resources :playlist_posts
   resources :playlist_users
 

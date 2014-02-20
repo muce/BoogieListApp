@@ -111,17 +111,20 @@ class PostsController < ApplicationController
   end
   
   def rip_audio(post)
-    puts "POSTS CONTROLLER rip_audio "+post.id.to_s
-    d = Rails.root.join('public', 'audio').to_s
-    puts d+"/"+post.facebook_id+'.mp3'
-    # post.delay.rip
+    if post.mp3_url.blank?
+      # encode_job = EncodeJob.new(session[:user], post)
+      # encode_job.print
+      Delayed::Job.enqueue EncodeJob.new(session[:user], post), :queue => 'user_'+session[:user].uid
+    else
+      puts "ALREADY ENCODED"
+    end
   end
   
   def send_email(post)
     # Resque.enqueue(EncoderWorker, params[:id])
     UserMailer.send_mail(session[:user].name).deliver
   end
-  
+
   def send_fb_message(post)
     puts "SEND FB MESSAGE"
     sender_chat_id = "-100007673834464@chat.facebook.com"
