@@ -34,35 +34,15 @@
                             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                                 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="/">BOOGIE TUNES</a>
+                            <a class="navbar-brand" href="/">BOOGIE LIST</a>
                         </div>
 
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
-                                <li <% if @nav_selected == 1 %>class="active"<% end %>>
-                                    <%= link_to("POSTS", posts_path) %>
-                                </li>
-                                <li <% if @nav_selected == 2 %>class="active"<% end %>>
-                                    <%= link_to("PLAYLISTS", playlists_path) %>
-                                </li>
-                                <li <% if @nav_selected == 3 %>class="active"<% end %>>
-                                    <%= link_to("USERS", users_path) %>
-                                </li>
-                                <li <% if @nav_selected == 4 %>class="active"<% end %>>
-                                    <%= link_to("IMPORTS", imports_path) %>
-                                </li>
-
+                                <li>LOG IN</li>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
-                                <li>
-                                    <a href="#">
-                                    <% if !session[:user].blank? %>
-                                    	Logged In: <%= session[:user].name %>
-                                    <% else %>
-                                    	Not Logged In
-                                    <% end %>
-                                    </a>
-                                </li>
+                                <li><%= link_to "Login with Facebook", user_omniauth_authorize_path(:facebook) %></li>
                             </ul>
                         </div>
                     </nav>
@@ -73,12 +53,13 @@
                     </div>
                 </div>
             </div>
+            
+            <div>
+        		<p class="notice"><%= notice %></p>
+   				<p class="alert"><%= alert %></p>
+        	</div>
         </div>
-        
-        <div>
-        	<p class="notice"><%= notice %></p>
-   			<p class="alert"><%= alert %></p>
-        </div>
+       
 		
         <div class="container main-body">
             <%= yield(@page_name) %>
@@ -87,7 +68,7 @@
         <%= javascript_include_tag "application" %>
 
         <footer>
-            <!--<p>&copy; Copyright 2014 by Muce</p>-->
+            
         </footer>
 
     </body>

@@ -11,6 +11,12 @@ class PostsController < ApplicationController
     @posts = Post.paginate(:page => params[:page]).order(post_date: :asc)
     @user = session[:user]
     @playlists = Playlist.where(:user_id => @user.id)
+    puts "POSTS LENGTH"+@posts.size.to_s
+    puts "USER "+session[:user].name
+    puts "PLAYLISTS "+@playlists.size.to_s
+    @posts.each do |p|
+      puts p.artist.to_s
+    end
     if session[:current_playlist_id].blank?
       if @playlists.size > 0
         session[:current_playlist_id] = @playlists.first.id
@@ -88,8 +94,9 @@ class PostsController < ApplicationController
   end
   
   def set_current_playlist
-    puts "SET PLAYLIST"
+    puts "SET PLAYLIST params "+params.to_s
     puts post_params
+    redirect_to posts_url
   end
   
   def add_to_playlist

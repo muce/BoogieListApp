@@ -6,8 +6,8 @@
 	<thead>
 		<tr>
 			<th>ID</th>
-			<th>USER ID</th>
-			<th>NAME</th>
+			<th>USER NAME</th>
+			<th>PLAYLIST NAME</th>
 			<th>CREATED AT</th>
 			<th><%= t '.actions', :default => t("helpers.actions") %></th>
 		</tr>
@@ -16,7 +16,7 @@
 		<% @playlists.each do |playlist| %>
 		<tr>
 			<td><%= link_to playlist.id, playlist_path(playlist) %></td>
-			<td><%= playlist.user_id %></td>
+			<td><%= User.find(playlist.user_id).name %></td>
 			<td><%= playlist.name %></td>
 			<td><%= l playlist.created_at %></td>
 			<td><%= link_to t('.edit', :default => t("helpers.links.edit")),
