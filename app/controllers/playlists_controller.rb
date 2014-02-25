@@ -70,6 +70,11 @@ class PlaylistsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def set_playlist
+    session[:current_playlist_id] = params[:playlist][:id] if !params[:playlist].blank?
+    redirect_to posts_url
+  end
 
 
   private

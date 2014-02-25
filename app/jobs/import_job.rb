@@ -1,15 +1,11 @@
-class ImportJob < Struct.new(import)
+class ImportJob < Struct.new(:import)
   
   def enqueue(job)
     puts 'import_job/enqueue'
   end
   
-  def print
-    
-  end
-  
   def perform
-    puts "ImportJob perform  "+user.to_s+", post: "+post.to_s
+    puts "import_job/perform  "+user.to_s+", post: "+post.to_s
     
   end
 

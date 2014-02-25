@@ -11,21 +11,15 @@ class PostsController < ApplicationController
     @posts = Post.paginate(:page => params[:page]).order(post_date: :asc)
     @user = session[:user]
     @playlists = Playlist.where(:user_id => @user.id)
-    puts "POSTS LENGTH"+@posts.size.to_s
-    puts "USER "+session[:user].name
-    puts "PLAYLISTS "+@playlists.size.to_s
-    @posts.each do |p|
-      puts p.artist.to_s
-    end
     if session[:current_playlist_id].blank?
       if @playlists.size > 0
         session[:current_playlist_id] = @playlists.first.id
       else
-        session[:current_playlist_id] = 1  
+        session[:current_playlist_id] = 1
       end
     end
     if !@playlists.blank?
-      @playlist = @playlists.first  
+      @playlist = Playlist.find(session[:current_playlist_id])  
       @items = @playlist.posts
     end
     
@@ -93,14 +87,17 @@ class PostsController < ApplicationController
     end
   end
   
-  def set_current_playlist
-    puts "SET PLAYLIST params "+params.to_s
-    puts post_params
+  def set_playlist
+    session[:current_playlist_id] = params[:playlist][:id] if !params[:playlist].blank?
     redirect_to posts_url
   end
   
   def add_to_playlist
+    puts "ADD TO PLAYLIST"
+    puts "ID "+params[:id].to_s
+    puts "CURRENT PLAYLIST ID "+session[:current_playlist_id].to_s
     if !Playlist.find(session[:current_playlist_id]).posts.exists?(params[:id])
+      puts "ADDING TO PLAYLIST"
       @item = PlaylistPost.new(post_id: params[:id], playlist_id: session[:current_playlist_id])
       @item.save
       post = Post.find(params[:id])
@@ -112,15 +109,16 @@ class PostsController < ApplicationController
   end
   
   def remove_from_playlist
+    puts "REMOVE FROM PLAYLIST"
     @item = PlaylistPost.find_by(post_id: params[:id], playlist_id: session[:current_playlist_id])
     @item.destroy
     redirect_to posts_url
   end
   
   def rip_audio(post)
+    puts "RIP AUDIO "+post.to_s
     if post.mp3_url.blank?
-      # encode_job = EncodeJob.new(session[:user], post)
-      # encode_job.print
+      puts "CREATE DJ"
       Delayed::Job.enqueue EncodeJob.new(session[:user], post), :queue => 'user_'+session[:user].uid
     else
       puts "ALREADY ENCODED"

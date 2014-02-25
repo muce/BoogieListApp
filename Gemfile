@@ -5,15 +5,15 @@ gem 'font-awesome-less'
 gem 'koala', '1.3.0'
 gem 'xmpp4r_facebook'
 gem 'sqlite3'
-gem 'resque', '~> 2.0.0.pre.1', github: 'resque/resque'
-gem 'resque_mailer'
 gem 'delayed_job_active_record'
+gem "resque", "~> 2.0.0.pre.1", github: "resque/resque"
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 gem 'will_paginate-bootstrap', '1.0.0'
+
 # gem 'heroku'
 gem "therubyracer"
 gem "less-rails", '>= 2.4.2' #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS

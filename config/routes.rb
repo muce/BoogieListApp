@@ -2,14 +2,12 @@ BoogieListApp::Application.routes.draw do
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   
-  # root :to => "home#login"
   root :to => "home#index"
   
   resources :posts do
     member do
       get :add_to_playlist
       get :remove_from_playlist
-      get :set_current_playlist
     end
   end
   
@@ -24,7 +22,8 @@ BoogieListApp::Application.routes.draw do
   
   resources :playlist_posts
   resources :playlist_users
-
+  
+  post "setplaylist", to: "posts#set_playlist"
   get "home/callback", to: "home#callback"
   get "/users", to: "users#index"
   get "/playlists", to: "playlists#index"

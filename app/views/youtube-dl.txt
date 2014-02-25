@@ -1,1 +1,0 @@
-/usr/local/bin/youtube-dl -o "314642735316936_529577387156802.%(ext)s" -x --audio-format "mp3" -k http://www.youtube.com/watch?v=3Naggh94ReQ
