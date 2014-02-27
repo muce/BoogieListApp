@@ -8,7 +8,7 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.paginate(:page => params[:page]).order(post_date: :asc)
+    @posts = Post.paginate(:page => params[:page]).order(post_date: :desc)
     @user = session[:user]
     @playlists = Playlist.where(:user_id => @user.id)
     if session[:current_playlist_id].blank?

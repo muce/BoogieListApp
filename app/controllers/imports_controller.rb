@@ -69,7 +69,6 @@ class ImportsController < ApplicationController
     puts "IMPORT RUN "+params[:id]
     import = Import.find(params[:id])
     group_id = '314642735316936'
-    # query = Facebook::CONFIG['boogie_tunes_id']+"/feed?limit="+import.limit.to_s+"&until="+import.until+"&__paging_token="+Facebook::CONFIG['boogie_tunes_id']+"_"+import.paging_token+"&access_token="+session[:access_token]
     query = "feed"
     if !import.limit.blank?
       query += "?limit="+import.limit.to_s
@@ -86,12 +85,10 @@ class ImportsController < ApplicationController
       posts = params[:page] ? api.get_page(params[:page]) : api.get_connections(group_id, query)
     rescue Exception=>ex
       puts ex.message
-      puts "ERROR!!!!!"
       redirect_to('/500.html')
       return
     end
     if !posts.blank?
-      puts "POSTS RETURN OK"
       puts "POSTS COUNT "+posts.size.to_s
       posts.each do |p|
         import_post(p)
@@ -101,7 +98,6 @@ class ImportsController < ApplicationController
       redirect_to imports_path
       return
     else
-      puts "POSTS RETURN NOT OK"
       redirect_to('/500.html')
       return
     end

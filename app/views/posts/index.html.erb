@@ -1,7 +1,7 @@
 <div class="row clearfix">
     <div class="col-md-12 column">
         <div class="page-header">
-            <h1> Example page header <small>Subtext for header</small></h1>
+            <h1> Boogie Mission Control <small>Latest Posts</small></h1>
         </div>
 
         <div>
@@ -29,6 +29,7 @@
         <table class="table-hover">
             <thead>
                 <tr>
+                	<th>Id</th>
                     <th>Image</th>
                     <th>Descripton</th>
                 </tr>
@@ -36,6 +37,7 @@
             <tbody>
                 <% @posts.each do |post| %>
                 <tr class="border-bottom">
+                	<td><%= post.id %></td>
                     <td><%= link_to(image_tag(post.picture_url), post.link_url, :target => 'blank') %></td>
                     <td> <%= link_to(post.artist+' - '+post.title, post.link_url, :target => 'blank', :class => 'title') %>
                     <br/>
@@ -86,7 +88,6 @@
                 <tr>
                     <th>Artist</th>
                     <th>Title</th>
-                    <th>Duration</th>
                     <th>Listen</th>
                     <th><%= t '.actions', :default => t("helpers.actions") %></th>
                 </tr>
@@ -96,7 +97,6 @@
                 <tr>
                     <td><%= i.artist %></td>
                     <td><%= i.title %></td>
-                    <td>xx:yy</td>
                     <td><%= link_to("youtube", i.link_url, :target => "blank")%></td>
                     <td><%= link_to t('.remove', :default => t("helpers.links.remove")),
                     remove_from_playlist_post_path(i), :class => 'btn btn-mini' %> </td>

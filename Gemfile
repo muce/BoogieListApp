@@ -13,6 +13,7 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 gem 'will_paginate-bootstrap', '1.0.0'
+gem 'taglib-ruby'
 
 # gem 'heroku'
 gem "therubyracer"
