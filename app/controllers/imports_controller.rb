@@ -68,7 +68,11 @@ class ImportsController < ApplicationController
   def run
     puts "IMPORT RUN "+params[:id]
     import = Import.find(params[:id])
-    group_id = '314642735316936'
+    
+    ##
+    ## FB GROUP ID
+    ## chaotic_fm_id, boogie_tunes_id, in_the_middle_id
+    group_id = '518413371538533'#'314642735316936'#'1440354159539820'
     query = "feed"
     if !import.limit.blank?
       query += "?limit="+import.limit.to_s

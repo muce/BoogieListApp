@@ -4,6 +4,7 @@ development:
   callback_url: 'http://localhost:3000'
   boogie_tunes_id: '314642735316936'
   chaotic_fm_id: '518413371538533'
+  in_the_middle_id: '1440354159539820'
   
 test: 
   app_id: '618163964915398'
@@ -11,6 +12,7 @@ test:
   callback_url: 'http://localhost:3000'
   boogie_tunes_id: '314642735316936'
   chaotic_fm_id: '518413371538533'
+  in_the_middle_id: '1440354159539820'
   
 production: 
   app_id: '618163964915398'
@@ -18,3 +20,4 @@ production:
   callback_url: 'http://localhost:3000'
   boogie_tunes_id: '314642735316936'
   chaotic_fm_id: '518413371538533'
+  in_the_middle_id: '1440354159539820'

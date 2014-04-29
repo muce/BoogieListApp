@@ -66,6 +66,8 @@ ActiveRecord::Schema.define(version: 20140224165617) do
     t.string   "message"
     t.integer  "likes"
     t.integer  "comments"
+    t.string   "contributor_name"
+    t.string   "contributor_fb_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

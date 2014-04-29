@@ -14,6 +14,8 @@ class CreatePosts < ActiveRecord::Migration
       t.string :message
       t.integer :likes
       t.integer :comments
+      t.string :contributor_name
+      t.string :contributor_fb_id
 
       t.timestamps
     end
